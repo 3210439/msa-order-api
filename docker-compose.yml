@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   order-db:
     image: mysql:8.0
@@ -12,7 +14,7 @@ services:
     networks:
       - order-network
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       retries: 5
       start_period: 20s
@@ -28,6 +30,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://order-db:3306/orderdb
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: rootpassword
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
     networks:
       - order-network
 
@@ -71,6 +74,4 @@ networks:
 volumes:
   order-db-data:
   zookeeper_data:
-    driver: local
   kafka_data:
-    driver: local

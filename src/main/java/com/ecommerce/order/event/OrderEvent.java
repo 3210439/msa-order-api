@@ -8,5 +8,7 @@ public class OrderEvent {
     private Long orderId;
     private String userId;
     private String status;
+    private Long productId;
+    private Integer quantity;
 }
 

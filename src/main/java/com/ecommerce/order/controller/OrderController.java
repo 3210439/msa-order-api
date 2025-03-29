@@ -25,7 +25,7 @@ public class OrderController {
 
         order.setStatus("PENDING");
         orderService.createOrder(order);
-        orderEventPublisher.publishOrderCreated(order.getId());
+        orderEventPublisher.publishOrderCreated(order);
 
         return ResponseEntity.ok("Order Created: " + order.getId().toString());
     }
