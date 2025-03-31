@@ -39,12 +39,17 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka:2.8.5'
     implementation 'org.apache.kafka:kafka-clients:3.0.0'
 
+    // prometheus
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
     // Database
     implementation 'mysql:mysql-connector-java:8.0.28'
 
     // Jackson
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'
@@ -59,9 +64,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
 
-    // Swagger
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
-    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+    // Springdoc OpenAPI
+    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+
 
 }
 
