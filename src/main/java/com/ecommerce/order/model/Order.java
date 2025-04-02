@@ -1,12 +1,13 @@
 package com.ecommerce.order.model;
 
+import com.ecommerce.order.model.common.BaseEntity;
 import lombok.Data;
 import javax.persistence.*;
 
 @Data
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
