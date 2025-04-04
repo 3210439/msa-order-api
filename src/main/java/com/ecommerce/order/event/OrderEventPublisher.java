@@ -24,7 +24,7 @@ public class OrderEventPublisher {
             event.setEventId(java.util.UUID.randomUUID().toString());
             event.setOrderId(order.getId());
             event.setUserId(order.getUserId().toString());
-            event.setStatus(order.getStatus());
+            event.setStatus(order.getStatus().toString());
             event.setProductId(order.getProductId());
             event.setQuantity(order.getQuantity());
             String message = objectMapper.writeValueAsString(event);

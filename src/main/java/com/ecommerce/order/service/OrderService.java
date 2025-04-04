@@ -1,22 +1,37 @@
 package com.ecommerce.order.service;
 
+import com.ecommerce.order.event.OrderEventPublisher;
 import com.ecommerce.order.model.Order;
+import com.ecommerce.order.model.dto.OrderRequestDto;
+import com.ecommerce.order.model.dto.OrderResponseDto;
 import com.ecommerce.order.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
+    private final OrderEventPublisher orderEventPublisher;
 
-    public void createOrder(Order order) {
-        orderRepository.save(order);
+    public OrderService(OrderRepository orderRepository, OrderEventPublisher orderEventPublisher) {
+        this.orderRepository = orderRepository;
+        this.orderEventPublisher = orderEventPublisher;
     }
 
-    public Order getOrderById(Long id) {
-        return orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+    @Transactional
+    public OrderResponseDto createOrder(OrderRequestDto request) {
+        Order order = request.toEntity();
+        Order savedOrder = orderRepository.save(order);
+        orderEventPublisher.publishOrderCreated(savedOrder);
+
+        return OrderResponseDto.builder().order(savedOrder).build();
+    }
+
+    @Transactional(readOnly = true)
+    public OrderResponseDto getOrderById(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+        return OrderResponseDto.builder().order(order).build();
     }
 }
