@@ -27,18 +27,25 @@
 
 ## 프로젝트 구성 요소
 
-### 1. msa-order-api (현재 레포지토리)
+### msa-order-api
 - **목적**: 전자상거래 시스템의 주문 관리 핵심 서비스.
 - **기술 스택**:
-  - Spring Boot 2.7.0
-  - MySQL (주문 데이터 저장용 RDBMS)
-  - Kafka (이벤트 발행)
-  - Springdoc OpenAPI (API 문서화)
-  - Micrometer + Actuator (Prometheus 메트릭)
-- **주요 기능**:
-  - POST `/api/order`: 주문 생성.
-  - GET `/api/order/{id}`: 주문 ID로 조회.
-- **설치 및 실행**:
-  ```bash
-  docker-compose up --build
-  ```
+  - 언어: Java 11 
+  - 프레임워크: Spring Boot 2.7.0
+  - 데이터베이스: MySQL (주문 데이터 저장용 RDBMS)
+  - 메시징: Kafka (이벤트 발행)
+  - API 문서화: Springdoc OpenAPI (API 문서화)
+  - 메트릭: Micrometer + Actuator (Prometheus 메트릭)
+  - 테스트: JUnit 5 & Mockito (단위 테스트)
+  ## 주요 기능
+- **주문 생성 (`POST /api/order`)**:
+    - 새로운 주문을 생성하고 데이터베이스에 저장합니다.
+    - 주문 이벤트(`OrderEvent`)를 Kafka 토픽(`order-event`)으로 발행하여 제품 서비스(`msa-product-api`)와 비동기적으로 통신합니다.
+    - 주문 상태를 초기화하고, 사용자 ID, 제품 ID, 수량 등 필수 정보를 입력받습니다.
+    - 예: 고객이 제품을 주문하면 재고 감소를 위해 이벤트를 발행.
+- **주문 조회 (`GET /api/order/{id}`)**:
+    - 주문 ID를 통해 특정 주문의 상세 정보를 조회합니다.
+    - 데이터베이스에서 주문 데이터를 가져와 클라이언트에 JSON 응답으로 반환합니다.
+    - 주문 상태, 생성 시간, 수정 시간 등 메타데이터를 포함합니다.
+
+
