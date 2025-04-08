@@ -6,7 +6,7 @@
 프로젝트는 모듈성과 확장성을 위해 다음과 같은 네 개의 구성 요소로 나뉘어 별도의 레포지토리로 관리됩니다:
 
 1. **`msa-order-api`**: 주문 관리 API
-2. **[`msa-product-api`](https://github.com/3210439/msa-product-api)**: 주문 관리 API
+2. **[`msa-product-api`](https://github.com/3210439/msa-product-api)**: 상품 관리 API
 3. **[`elk-stack-for-msa-server`](https://github.com/3210439/elk-stack-for-msa-server)**: ELK 스택(Elasticsearch, Logstash, Kibana)을 사용한 로깅 스택.
 4. **[`order-api-monitoring`](https://github.com/3210439/order-api-monitoring)**: Prometheus와 Grafana를 사용한 모니터링 스택.
 
