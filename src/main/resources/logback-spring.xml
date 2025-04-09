@@ -1,0 +1,70 @@
+<configuration>
+  <!-- 콘솔 출력 -->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- 클릭 로그 파일 -->
+  <appender name="CLICK_FILE" class="ch.qos.logback.core.FileAppender">
+    <file>logs/user_click.log</file>
+    <append>true</append>
+    <encoder>
+      <pattern>%msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- 노출 로그 파일 -->
+  <appender name="EXPOSE_FILE" class="ch.qos.logback.core.FileAppender">
+    <file>logs/user_expose.log</file>
+    <append>true</append>
+    <encoder>
+      <pattern>%msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- 구매 로그 파일 -->
+  <appender name="PURCHASE_FILE" class="ch.qos.logback.core.FileAppender">
+    <file>logs/user_purchase.log</file>
+    <append>true</append>
+    <encoder>
+      <pattern>%msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- 접근 로그 파일 -->
+  <appender name="ACCESS_FILE" class="ch.qos.logback.core.FileAppender">
+    <file>logs/access.log</file>
+    <append>true</append>
+    <encoder>
+      <pattern>%msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- Logger 설정 -->
+  <logger name="UserClickLogger" level="INFO" additivity="false">
+    <appender-ref ref="CLICK_FILE"/>
+    <appender-ref ref="CONSOLE"/> <!-- 필요 시 콘솔에도 출력 -->
+  </logger>
+
+  <logger name="UserExposeLogger" level="INFO" additivity="false">
+    <appender-ref ref="EXPOSE_FILE"/>
+    <appender-ref ref="CONSOLE"/>
+  </logger>
+
+  <logger name="UserPurchaseLogger" level="INFO" additivity="false">
+    <appender-ref ref="PURCHASE_FILE"/>
+    <appender-ref ref="CONSOLE"/>
+  </logger>
+
+  <logger name="AccessLogger" level="INFO" additivity="false">
+    <appender-ref ref="ACCESS_FILE"/>
+    <appender-ref ref="CONSOLE"/>
+  </logger>
+
+  <!-- 루트 로거 -->
+  <root level="INFO">
+    <appender-ref ref="CONSOLE"/>
+  </root>
+</configuration>

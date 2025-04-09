@@ -1,41 +1,32 @@
 package com.ecommerce.order.service;
 
 import com.ecommerce.order.model.UserActivityLog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Paths;
 
 @Service
 public class LogService {
 
-  private static final String LOG_DIR = "logs/"; // 로그 디렉토리
+  // 각 로그 유형별로 별도의 Logger 인스턴스 생성
+  private static final Logger CLICK_LOGGER = LoggerFactory.getLogger("UserClickLogger");
+  private static final Logger EXPOSE_LOGGER = LoggerFactory.getLogger("UserExposeLogger");
+  private static final Logger PURCHASE_LOGGER = LoggerFactory.getLogger("UserPurchaseLogger");
+  private static final Logger ACCESS_LOGGER = LoggerFactory.getLogger("AccessLogger");
 
   public void logClick(UserActivityLog log) {
-    writeToFile("user_click.log", log.toClickString());
+    CLICK_LOGGER.info(log.toClickString());
   }
 
   public void logExpose(UserActivityLog log) {
-    writeToFile("user_expose.log", log.toExposeString());
+    EXPOSE_LOGGER.info(log.toExposeString());
   }
 
   public void logPurchase(UserActivityLog log) {
-    writeToFile("user_purchase.log", log.toPurchaseString());
+    PURCHASE_LOGGER.info(log.toPurchaseString());
   }
 
   public void logAccess(UserActivityLog log) {
-    writeToFile("access.log", log.toAccessString());
-  }
-
-  private void writeToFile(String fileName, String content) {
-    String filePath = Paths.get(LOG_DIR, fileName).toString();
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
-      writer.write(content);
-      writer.newLine();
-    } catch (IOException e) {
-      e.printStackTrace(); // 실제 환경에서는 로깅 프레임워크 사용
-    }
+    ACCESS_LOGGER.info(log.toAccessString());
   }
 }
