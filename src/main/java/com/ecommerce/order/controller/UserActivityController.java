@@ -1,12 +1,16 @@
 package com.ecommerce.order.controller;
 
-import com.ecommerce.order.model.UserActivityLog;
+import com.ecommerce.order.model.dto.AccessLogRequest;
+import com.ecommerce.order.model.dto.ClickLogRequest;
+import com.ecommerce.order.model.dto.ExposeLogRequest;
+import com.ecommerce.order.model.dto.PurchaseLogRequest;
 import com.ecommerce.order.service.LogService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -16,52 +20,30 @@ public class UserActivityController {
   private LogService logService;
 
   @GetMapping("/click")
-  public String logClick(@RequestParam String userId, @RequestParam String itemId,
-      HttpSession session) {
-    UserActivityLog log = new UserActivityLog();
-    log.setUserId(userId);
-    log.setSessionId(session.getId()); // 세션은 별도 로직으로 생성 가능
-    log.setItemId(itemId);
-    log.setPageUrl("/products/" + itemId);
-    logService.logClick(log);
+  public String logClick(ClickLogRequest clickLogRequest, HttpSession session) {
+    clickLogRequest.setSessionId(session.getId());
+    logService.logClick(clickLogRequest);
     return "Click logged";
   }
 
   @GetMapping("/expose")
-  public String logExpose(@RequestParam String userId, @RequestParam String itemId,
-      @RequestParam int position, HttpSession session) {
-    UserActivityLog log = new UserActivityLog();
-    log.setUserId(userId);
-    log.setSessionId(session.getId());
-    log.setItemId(itemId);
-    log.setPosition(position);
-    logService.logExpose(log);
+  public String logExpose(ExposeLogRequest exposeLogRequest, HttpSession session) {
+    exposeLogRequest.setSessionId(session.getId());
+    logService.logExpose(exposeLogRequest);
     return "Expose logged";
   }
 
   @PostMapping("/purchase")
-  public String logPurchase(@RequestParam String userId, @RequestParam String orderId,
-      @RequestParam String itemId, @RequestParam int amount, HttpSession session) {
-    UserActivityLog log = new UserActivityLog();
-    log.setUserId(userId);
-    log.setSessionId(session.getId());
-    log.setOrderId(orderId);
-    log.setItemId(itemId);
-    log.setAmount(amount);
-    logService.logPurchase(log);
+  public String logPurchase(@RequestBody PurchaseLogRequest purchaseLogRequest, HttpSession session) {
+    purchaseLogRequest.setSessionId(session.getId());
+    logService.logPurchase(purchaseLogRequest);
     return "Purchase logged";
   }
 
   @GetMapping("/access")
-  public String logAccess(@RequestParam String userId, @RequestParam String ipAddress,
-      @RequestParam String requestUrl, HttpSession session) {
-    UserActivityLog log = new UserActivityLog();
-    log.setUserId(userId);
-    log.setSessionId(session.getId());
-    log.setIpAddress(ipAddress);
-    log.setRequestUrl(requestUrl);
-    log.setHttpMethod("GET");
-    logService.logAccess(log);
+  public String logAccess(AccessLogRequest accessLogRequest, HttpSession session) {
+    accessLogRequest.setSessionId(session.getId());
+    logService.logAccess(accessLogRequest);
     return "Access logged";
   }
 }
